@@ -1,0 +1,71 @@
+{
+  "_readme": "Named groups: one natural-language term expanding to a list of canonical category_english values.",
+  "appliances": [
+    "home_appliances",
+    "home_appliances_2",
+    "small_appliances",
+    "small_appliances_home_oven_and_coffee",
+    "air_conditioning"
+  ],
+  "beauty": [
+    "health_beauty",
+    "perfumery"
+  ],
+  "books": [
+    "books_general_interest",
+    "books_imported",
+    "books_technical"
+  ],
+  "electronics": [
+    "computers",
+    "computers_accessories",
+    "electronics",
+    "telephony",
+    "tablets_printing_image",
+    "audio",
+    "consoles_games"
+  ],
+  "fashion": [
+    "fashio_female_clothing",
+    "fashion_male_clothing",
+    "fashion_childrens_clothes",
+    "fashion_bags_accessories",
+    "fashion_shoes",
+    "fashion_sport",
+    "fashion_underwear_beach"
+  ],
+  "furniture": [
+    "furniture_decor",
+    "furniture_living_room",
+    "furniture_bedroom",
+    "office_furniture",
+    "furniture_mattress_and_upholstery",
+    "kitchen_dining_laundry_garden_furniture"
+  ],
+  "home": [
+    "furniture_decor",
+    "housewares",
+    "home_appliances",
+    "home_appliances_2",
+    "home_confort",
+    "home_comfort_2",
+    "kitchen_dining_laundry_garden_furniture",
+    "bed_bath_table",
+    "furniture_living_room",
+    "furniture_bedroom"
+  ],
+  "kids": [
+    "toys",
+    "baby",
+    "fashion_childrens_clothes",
+    "diapers_and_hygiene"
+  ],
+  "tools": [
+    "construction_tools_construction",
+    "construction_tools_lights",
+    "construction_tools_safety",
+    "costruction_tools_garden",
+    "costruction_tools_tools",
+    "garden_tools"
+  ]
+}

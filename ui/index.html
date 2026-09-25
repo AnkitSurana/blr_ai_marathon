@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seller chatbot · what the user sees and what runs behind it</title>
+<style>
+:root{--bg:#f2f2f5;--card:#fff;--ink:#171719;--ink2:#3a3a3f;--muted:#6e6e73;--hair:#d8d8dd;--hair2:#eaeaee;--brand:#e91e63;--brand2:#c2185b;--tint:#fde4ee;--good:#1b8332;--goodbg:#e6f4e9;--bad:#c93c1e;--badbg:#fdece7;--warn:#a8680a;--warnbg:#fdf3e0;--warnline:rgba(168,104,10,.42);--dark:#0f0f11;--blue:#1f5fbf;--bluebg:#e6effc;
+--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0;min-width:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;letter-spacing:-.01em;display:flex;flex-direction:column;padding:14px 20px 12px;gap:12px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+h1{font-size:17px;font-weight:650;letter-spacing:-.02em}h1 span{color:var(--muted);font-weight:400}
+.top-r{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:14px;align-items:center;font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:2px;background:var(--hair2);padding:3px;border-radius:10px}
+.tabs button{all:unset;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--muted);padding:5px 12px;border-radius:8px}
+.tabs button:hover{color:var(--ink)}.tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.hint{margin:0 0 12px;padding:9px 13px;border-radius:10px;background:var(--goodbg);color:var(--good);font-size:13px;font-weight:600;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:99px;margin-right:6px;background:var(--warn)}.dot.on{background:var(--good)}
+.wins{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr);gap:16px}
+.win{background:var(--card);border-radius:14px;border:1px solid var(--hair);box-shadow:0 18px 40px -30px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f6f6f8;border-bottom:1px solid var(--hair2);font-size:12.5px;font-weight:600;color:var(--ink2)}
+.bar i{width:10px;height:10px;border-radius:99px;background:#ff5f57}.bar i:nth-child(2){background:#febc2e}.bar i:nth-child(3){background:#28c840}
+.bar span{margin-left:8px}
+.bar em{margin-left:auto;font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.win.user .bar span{color:var(--brand2)}
+.who{display:flex;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--hair2);font-size:12.5px;color:var(--muted)}
+.av{width:30px;height:30px;border-radius:99px;background:var(--tint);color:var(--brand2);display:grid;place-items:center;font-weight:700;font-size:13px}
+.who b{color:var(--ink);font-weight:600;display:block;font-size:13px}
+.chat{flex:1;min-height:0;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fafafc}
+.bub{max-width:90%;padding:10px 14px;border-radius:16px;font-size:15px;line-height:1.5;white-space:pre-wrap}
+.bub.u{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:4px}
+.bub.b{align-self:flex-start;background:#fff;border:1px solid var(--hair2);border-bottom-left-radius:4px}
+.bub.b small{display:block;margin-top:6px;font-size:12px;color:var(--muted);line-height:1.4}
+.demo-strip{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:5px 14px;background:var(--warnbg);border-bottom:1px solid var(--warnline);font-size:11px;color:var(--warn);letter-spacing:.02em}
+.demo-strip>span:first-child{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:10px}
+.demo-strip>span:not(:first-child)::before{content:'·';margin-right:10px;color:var(--warn);opacity:.5}
+.newchat,.limitbtn{margin-left:8px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;border:1px solid var(--hair);background:#fff;color:var(--ink2);cursor:pointer}
+.newchat:hover{background:var(--bg);border-color:var(--muted)}
+.limitbtn{color:var(--bad);border-color:rgba(201,60,30,.4);background:#fff}
+.limitbtn:hover{background:var(--badbg)}
+.limitbtn.on{background:var(--bad);color:#fff;border-color:var(--bad)}
+.win.user{position:relative;overflow:visible}
+.limitpop{position:absolute;top:44px;right:12px;width:290px;max-width:calc(100vw - 40px);max-height:calc(100vh - 120px);overflow-y:auto;background:#fff;border:1px solid var(--bad);border-radius:12px;padding:12px 14px 10px;font-size:11.5px;color:var(--ink2);box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:20;line-height:1.5}
+.limitpop b{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bad);margin-bottom:6px;font-weight:800}
+.limitpop ul{margin:0;padding-left:15px}
+.limitpop li{margin:3px 0}
+.limitpop li b{display:inline;font-size:inherit;letter-spacing:normal;text-transform:none;color:var(--ink);margin:0;font-weight:700}
+.limitpop .x{position:absolute;top:6px;right:9px;font-size:16px;line-height:1;color:var(--muted);cursor:pointer;background:none;border:0;padding:2px 6px}
+.limitpop .x:hover{color:var(--ink)}
+.limitpop[hidden]{display:none}
+.demo-strip code{background:transparent;border:1px solid var(--warnline);padding:0 4px;border-radius:3px;font-family:var(--mono);font-size:10.5px}
+.bub.b .mdlist{white-space:normal;margin:6px 0 2px;padding-left:18px;list-style:disc}
+.bub.b .mdlist li{margin:2px 0;font-size:14.5px}
+.bub.b b{font-weight:650}
+.bub.b code{background:var(--hair2);padding:1px 5px;border-radius:4px;font-family:var(--mono);font-size:13px}
+.bub.t{color:var(--muted);font-style:italic}
+.empty{margin:auto;text-align:center;color:var(--muted);font-size:14px;line-height:1.55;max-width:32ch}
+.compose{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--hair2);background:#fff}
+.compose input{flex:1;font-size:15px;padding:10px 15px;border:1px solid var(--hair);border-radius:99px;outline:none;background:#fafafc}
+.compose input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--tint);background:#fff}
+.compose button{all:unset;cursor:pointer;padding:10px 20px;background:var(--brand);color:#fff;border-radius:99px;font-size:14px;font-weight:600}
+.be{flex:1;min-height:0;overflow:auto;padding:16px 18px;display:flex;flex-direction:column;gap:14px;background:#fff}
+.q{padding:10px 14px;border-radius:12px;background:#f6f6f8;border:1px solid var(--hair2)}
+.q small{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:3px}
+.q div{font-size:15px;font-weight:500}
+.how{display:flex;align-items:center;gap:14px}
+.how .badge{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:#fff;font-size:26px;font-weight:800}
+.how .txt{flex:1;font-size:14px;line-height:1.4}.how .txt b{display:block;font-size:16px;letter-spacing:-.01em}.how .txt span{color:var(--muted);font-size:12.5px}
+.rA{background:var(--good)}.rB{background:#c98a14}.rC{background:var(--bad)}.rL{background:var(--blue)}
+.tok{flex:none;text-align:right}.tok b{display:block;font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}.tok b.z{color:var(--good)}
+.tok small{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.steps{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:4px 12px;padding:9px 0;border-top:1px solid var(--hair2);opacity:0;transform:translateY(4px);animation:in .28s ease forwards}
+.step:first-child{border-top:none}
+@keyframes in{to{opacity:1;transform:none}}
+.step .n{width:22px;height:22px;border-radius:99px;background:var(--bg);color:var(--muted);display:grid;place-items:center;font-size:11px;font-weight:700;align-self:start;margin-top:1px}
+.step h4{font-size:13.5px;font-weight:650}
+.step p{grid-column:2;font-size:13px;line-height:1.45;color:var(--ink2)}
+.step.s-gap h4::after{content:" · the rules couldn't read this";color:var(--warn);font-weight:600;font-size:12px}
+.step.s-gap p{color:var(--warn)}.step.s-fail p{color:var(--bad)}.step.s-warn p{color:var(--warn)}
+.tag{grid-column:3;grid-row:1;align-self:start;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:3px 9px;border-radius:99px}
+.t-session{background:var(--bluebg);color:var(--blue)}.t-rule{background:var(--goodbg);color:var(--good)}.t-llm{background:var(--warnbg);color:var(--warn);border:1px solid var(--warnline)}
+.t-guard{background:var(--dark);color:#fff}.t-human{background:var(--tint);color:var(--brand2)}
+.blk .lab{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:6px}
+pre.sql{background:var(--dark);color:#d7d7dc;border-radius:10px;padding:11px 14px;font-family:var(--mono);font-size:12px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+pre.sql b{color:#f472b6;font-weight:600}
+table.res{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;font-family:var(--mono)}
+table.res td,table.res th{padding:4px 8px;border-bottom:1px solid var(--hair2);text-align:left}table.res th{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-family:var(--font)}
+.call{border:1px solid var(--warnline);background:#fffcf5;border-radius:12px;padding:10px 14px;font-size:12.5px}
+.call .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:600}
+.call .sb{font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;letter-spacing:.06em}
+.b-live{background:var(--goodbg);color:var(--good)}.b-recorded{background:var(--bluebg);color:var(--blue)}.b-unavailable,.b-error{background:var(--badbg);color:var(--bad)}
+.call summary{cursor:pointer;color:var(--muted);font-size:12px;margin-top:6px}
+.call pre{margin-top:6px;background:#fff;border:1px solid var(--hair2);border-radius:8px;padding:8px 10px;font-family:var(--mono);font-size:11.5px;white-space:pre-wrap;word-break:break-word;color:var(--ink2)}
+details.aud summary{cursor:pointer;color:var(--muted);font-size:12px}
+.idle{margin:auto;text-align:center;color:var(--muted);font-size:14px;line-height:1.6;max-width:36ch}
+footer{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
+footer .lab{font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:10.5px}
+.grp{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.grp i{font-style:normal;font-size:10px;font-weight:800;color:#fff;padding:2px 7px;border-radius:5px}
+.i-A{background:var(--good)}.i-B{background:#c98a14}.i-C{background:var(--bad)}.i-Q{background:var(--blue)}.i-R{background:var(--dark)}
+.rQ{background:var(--blue)}
+.keybox{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.keybox input{width:260px;font:12px var(--mono);padding:6px 10px;border:1px solid var(--hair);border-radius:8px;background:#fff;outline:none}
+.keybox input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--tint)}
+.keybox button{all:unset;cursor:pointer;font-size:12px;font-weight:600;padding:5px 12px;border-radius:8px;background:var(--ink);color:#fff}
+.keybox select{font:12px var(--mono);padding:6px 8px;border:1px solid var(--hair);border-radius:8px;background:#fff;color:var(--ink);max-width:190px}
+.keybox button.alt{background:#fff;color:var(--ink);border:1px solid var(--hair)}
+.locked{font:12px var(--mono);letter-spacing:2px;color:var(--good);background:var(--goodbg);padding:5px 12px;border-radius:8px;user-select:none;-webkit-user-select:none;pointer-events:none}
+.kerr{color:var(--bad);font-size:12px}
+#banner{display:none;padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:600;line-height:1.45}
+#banner.err{display:block;background:var(--badbg);color:var(--bad);border:1px solid rgba(201,60,30,.4)}
+#banner.ok{display:block;background:var(--goodbg);color:var(--good);border:1px solid rgba(27,131,50,.35)}
+#banner.wait{display:block;background:var(--warnbg);color:var(--warn);border:1px solid var(--warnline)}
+.opts{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.opt{all:unset;cursor:pointer;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--brand);color:var(--brand);border-radius:99px;background:#fff}.opt:hover{background:var(--brand);color:#fff}
+.chip{all:unset;cursor:pointer;font-size:12.5px;padding:5px 12px;border:1px solid var(--hair);border-radius:99px;background:#fff;color:var(--ink)}
+.chip:hover{border-color:var(--brand);color:var(--brand)}
+.panel{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px 22px;flex:1;min-height:0;overflow:auto}
+.panel h2{font-size:17px;margin-bottom:4px}.panel p.note{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+table.g{width:100%;border-collapse:collapse;font-size:12.5px}
+table.g th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--hair2)}
+table.g td{padding:5px 8px;border-bottom:1px solid var(--hair2);font-family:var(--mono);font-size:12px}table.g td.ph{font-family:var(--font);font-size:13px}
+.ok{color:var(--good);font-weight:700}.no{color:var(--bad);font-weight:700}.un{color:var(--warn);font-weight:700}
+.dq{display:flex;gap:8px;margin-bottom:10px}.dq input{flex:1;padding:9px 13px;border:1px solid var(--hair);border-radius:10px;font-size:14px}
+.btn{all:unset;cursor:pointer;padding:8px 16px;background:var(--ink);color:#fff;border-radius:10px;font-size:13px;font-weight:600}.btn.alt{background:#fff;color:var(--ink);border:1px solid var(--hair)}
+.dres{padding:10px 14px;border-radius:10px;background:var(--bg);font-family:var(--mono);font-size:13px;margin-bottom:10px;line-height:1.6}
+.cl{border:1px solid var(--hair2);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.cl .h{display:flex;justify-content:space-between;padding:9px 14px;background:var(--bg);font-size:13px;font-weight:600}
+.cl .r{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:8px;padding:7px 14px;border-top:1px solid var(--hair2);font-size:13px}.cl .r span.c{font-family:var(--mono);color:var(--muted);text-align:right}
+.cl select,.cl input{font-size:12px;padding:4px 7px;border:1px solid var(--hair);border-radius:7px}.mapped{color:var(--good);font-weight:700;font-size:12px}
+.logl{font-family:var(--mono);font-size:11.5px;line-height:1.6}.logl div{padding:4px 0;border-top:1px solid var(--hair2)}
+body.embed{padding:8px 10px 8px;gap:8px}body.embed header{display:none}
+@media(max-width:1000px){.wins{grid-template-columns:1fr}html,body{height:auto}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Seller chatbot <span>· what the user sees, and what runs behind it</span></h1>
+  <div class="top-r"><span class="keybox" id="keybox"></span><span id="mstat"></span><nav class="tabs" id="design" title="Who does the work"><button data-d="deterministic" class="on">Rules first</button><button data-d="all_llm">Model only</button></nav><nav class="tabs" id="tabs"><button data-v="" class="on">Chat</button><button data-v="dates">Date gauntlet</button><button data-v="queue">Review queue</button><button data-v="audit">Audit log</button></nav></div>
+</header>
+
+<div id="banner" role="status"></div>
+
+<div class="wins" id="wins">
+  <section class="win user">
+    <div class="bar"><i></i><i></i><i></i><span>Seller portal</span><button id="newchat" class="newchat" title="Clear the chat and forget the previous turns">↻ New chat</button><button id="limitbtn" class="limitbtn" title="Known demo limitations" aria-expanded="false">⚠ Limits</button><em>What the user sees</em></div>
+    <div id="limitpop" class="limitpop" hidden>
+      <button class="x" id="limitclose" title="Close">×</button>
+      <b>What this demo does NOT do reliably</b>
+      <ul>
+        <li><b>Compare-across-periods clarify flow.</b> "compared to last year" needs a metric AND survives the Q clarify, but the compare marker itself is not re-checked on the follow-up turn.</li>
+        <li><b>Forecasting.</b> "Predict my revenue" refuses (Route C). No time-series model.</li>
+        <li><b>Cross-seller benchmarks.</b> "compare to other sellers" refuses (Route R). No cohort math.</li>
+        <li><b>Route B needs a live LLM key.</b> The B chips (bicycle helmet, candle) send one small ~290-token call to the model. Without a connected key, both chips still work but the pipeline falls to C with an honest "I could not identify the term" refusal (no number invented). With a key: bicycle helmet resolves to sports_leisure and answers 105 orders; candle stays refused because no category fits.</li>
+        <li><b>Non-English input.</b> Vocabulary and phrase lists are English only.</li>
+      </ul>
+    </div>
+    <div class="demo-strip" title="These are demo stubs, not real production controls. Details in ./REVIEW.md">
+      <span>DEMO ONLY</span>
+      <span>auth = <code>X-Demo: 1</code> header</span>
+      <span>key held in memory</span>
+      <span>no rate limit</span>
+      <span>local SQLite</span>
+    </div>
+    <div class="who"><div class="av">S</div><div><b id="whoname">Signed in</b><span id="whoinfo"></span></div></div>
+    <div class="chat" id="chat"><div class="empty">Ask about your orders, like you would ask a colleague.</div></div>
+    <div class="compose"><input id="q" placeholder="Ask about your orders…" autocomplete="off" spellcheck="false"><button id="go">Send</button></div>
+  </section>
+  <section class="win">
+    <div class="bar"><i></i><i></i><i></i><span>Backend</span><em>Everything the company runs</em></div>
+    <div class="be" id="be"><div class="idle">Ask a question on the left.<br>This side shows every step behind the answer, and who decided each one: a <b>rule</b>, the <b>model</b>, or a <b>check</b>.</div></div>
+  </section>
+</div>
+
+<footer id="foot">
+  <span class="lab">Try</span>
+  <span class="grp" data-g="A"><i class="i-A">A</i></span>
+  <span class="grp" data-g="Q"><i class="i-Q">?</i></span>
+  <span class="grp" data-g="B"><i class="i-B">B</i></span>
+  <span class="grp" data-g="C"><i class="i-C">C</i></span>
+  <span class="grp" data-g="R"><i class="i-R">R</i></span>
+</footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// small markdown for the bot bubble: **bold**, `code`, and lines starting with "- " become a compact list.
+// input is a plain string; output is already-escaped HTML.
+const md = s => {
+  const inline = t => esc(t).replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>').replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  const out = [];
+  let list = [];
+  const flush = () => { if (list.length) { out.push('<ul class="mdlist">' + list.map(i => `<li>${inline(i)}</li>`).join('') + '</ul>'); list = []; } };
+  for (const line of String(s ?? '').split('\n')) {
+    const m = /^\s*[-*]\s+(.*)$/.exec(line);
+    if (m) { list.push(m[1]); continue; }
+    flush();
+    out.push(inline(line));
+  }
+  flush();
+  return out.join('\n');
+};
+const fmt = n => Number(n).toLocaleString('en-US');
+const api = (p, body) => fetch(p, body ? {method:'POST', headers:{'content-type':'application/json', 'X-Demo': '1'}, body: JSON.stringify(body)} : {}).then(async r => { const j = await r.json(); if (!r.ok) throw new Error(j.error || r.status); return j; });
+const P = new URLSearchParams(location.search), VIEW = P.get('view') || '';
+if (P.get('embed')) document.body.classList.add('embed');
+let design = P.get('design') === 'all_llm' ? 'all_llm' : 'deterministic';
+let info = null, seller = null;
+
+const STARTERS = {
+  A: ['How many orders did I get last month?', 'What was my revenue in March 2018?', 'How many sports orders did I get in 2018?', 'Show my top 3 categories by revenue this year'],
+  Q: ['How am I doing this year?'],
+  B: ['How many bicycle helmet orders did I get in 2018?', 'How many candle orders did I get in 2018?'],
+  C: ['Why did my sales drop in March?', 'Predict my revenue for next month'],
+  R: ["Show me all sellers' orders last month", 'How does my revenue compare to other sellers?'],
+};
+const TAGS = {session: 'LOGIN', rule: 'RULE', llm: 'MODEL', guard: 'CHECK', human: 'PERSON'};
+
+async function send(q) {
+  q = q.trim(); if (!q) return; $('#q').value = '';
+  const c = $('#chat'); if (c.querySelector('.empty')) c.innerHTML = '';
+  const u = document.createElement('div'); u.className = 'bub u'; u.textContent = q; c.appendChild(u);
+  const th = document.createElement('div'); th.className = 'bub b t'; th.textContent = 'Checking your orders…'; c.appendChild(th); c.scrollTop = c.scrollHeight;
+  try {
+    const t = await api('/api/chat', {seller_id: seller.seller_id, message: q, design});
+    const lines = t.reply.split('\n'), isNote = l => l.startsWith('(') || l.startsWith('Note:');
+    th.className = 'bub b'; th.innerHTML = md(lines.filter(l => !isNote(l)).join('\n')) + (lines.some(isNote) ? `<small>${esc(lines.filter(isNote).join(' '))}</small>` : '') + (t.options ? `<div class="opts">${t.options.map(o => `<button class="opt">${esc(o)}</button>`).join('')}</div>` : '');
+    th.querySelectorAll('.opt').forEach(b => b.onclick = () => { th.querySelectorAll('.opt').forEach(x => x.disabled = true); send(b.textContent); });
+    c.scrollTop = c.scrollHeight; trace(t);
+  } catch (e) { th.className = 'bub b'; th.textContent = 'Sorry, something went wrong.'; }
+}
+
+function sqlHTML(s) { const ps = [...(s.params || [])]; return esc(s.text).replace(/\?/g, () => `<b>'${esc(ps.shift())}'</b>`); }
+function trace(t) {
+  const tk = t.tokens.in + t.tokens.out, ic = t.initial_route, rc = 'r' + (t.route === 'LLM' ? 'L' : t.route);
+  const head = t.design === 'all_llm' ? ['The model did everything', 'It decided the period, the products, what to measure, and wrote the query.'] :
+    ({A: ['Answered by rules alone', 'Every part of the question was read by code. No model was needed.'],
+      B: ['Rules plus one small model question', 'Code read most of it. The model was asked only about the part the rules couldn\'t read, and code checked its answer.'],
+      C: (t.outcome === 'refused_scope_with_data'
+          ? ['Refused the "why", answered the "what"', 'The out-of-scope part was refused; the underlying period/metric was computed by the same template Route A uses. Zero model tokens.']
+          : ['Refused: out of scope', 'The question asks for something the portal doesn\'t answer (why / forecast / trend). The rules refuse and offer a reformulation. No model call.']),
+      Q: ['Asked the user what to measure', 'The question doesn\'t say. Nothing is assumed, and a model couldn\'t know either, so the assistant asks. Nothing has run yet.'],
+      R: ['Refused: cross-tenant / policy', 'The question asks for another seller\'s data (or a write). The rules refuse before any model call. Zero model tokens.']}[ic] || ['', '']);
+  const moved = ic === 'B' && t.route === 'C';
+  const badge = moved ? 'B→C' : (t.route === 'LLM' ? 'M' : (t.route === 'Q' ? '?' : t.route));
+  let n = 0; const steps = t.steps.map(s => `<div class="step s-${s.status}" style="animation-delay:${(n++) * 110}ms"><span class="n">${n}</span><h4>${esc(s.name)}</h4><span class="tag t-${s.source}">${TAGS[s.source] || ''}</span><p>${esc(s.detail)}</p></div>`).join('');
+  const res = t.result && t.result.rows ? `<table class="res"><tr>${t.result.columns.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${t.result.rows.slice(0, 6).map(r => `<tr>${r.map(v => `<td>${esc(typeof v === 'number' && !Number.isInteger(v) ? v.toFixed(2) : v)}</td>`).join('')}</tr>`).join('')}</table>` : '';
+  $('#be').innerHTML = `
+    <div class="q"><small>${t.answering ? 'The question, with your answer' : 'The question'}</small><div>${esc(t.message)}</div></div>
+    <div class="how"><div class="badge ${rc}" style="${moved ? 'font-size:17px' : ''}">${badge}</div><div class="txt"><b>${esc(head[0] + (moved ? ', then the whole question went to the model' : ''))}</b><span>${esc(head[1])}</span></div>
+      <div class="tok"><b class="${tk === 0 ? 'z' : ''}">${t.tokens.estimated ? '~' : ''}${fmt(tk)}</b><small>model tokens${t.tokens.estimated ? ' (would send)' : ''}</small></div></div>
+    <div class="steps">${steps}</div>
+    ${t.sql ? `<div class="blk"><div class="lab">The query that ran${t.route === 'LLM' ? ' (written by the model, run inside the safety check)' : (t.route === 'C' && t.outcome === 'refused_scope_with_data' ? ' (a rules template; the underlying number the seller can verify)' : ' (an approved template)')}</div><pre class="sql">${sqlHTML(t.sql)}</pre>${res}</div>` : ''}
+    ${t.llm_calls.map(c => `<div class="call"><div class="top"><span>Model call · ${esc(c.task.replace('_', ' '))}</span><span class="sb b-${c.source}">${({live: 'LIVE', recorded: 'RECORDED', unavailable: 'NOT RUN', error: 'FAILED'})[c.source]}</span><span>${c.source === 'unavailable' ? '~' + c.prompt_tokens_est + ' tokens if sent' : (c.tokens_in + c.tokens_out) + ' tokens'}</span>${c.reply ? `<span>${c.valid ? 'reply passed the checks' : 'reply rejected by the checks'}</span>` : ''}</div><details><summary>Show what was sent${c.reply ? ' and what came back' : ''}</summary><pre>${esc(c.system)}\n\n${esc(c.user)}</pre>${c.reply ? `<pre>${esc(c.reply)}</pre>` : ''}</details></div>`).join('')}
+    <details class="aud"><summary>Audit record</summary><pre class="sql" style="margin-top:6px">${esc(JSON.stringify(t.audit, null, 1))}</pre></details>`;
+  $('#be').scrollTop = 0;
+}
+
+function chips() {
+  const only = P.get('chips');
+  document.querySelectorAll('.grp').forEach(g => { const k = g.dataset.g; if (only && !only.includes(k)) { g.style.display = 'none'; return; } STARTERS[k].forEach(q => { const b = document.createElement('button'); b.className = 'chip'; b.textContent = q; b.onclick = () => { send(q); b.blur(); }; g.appendChild(b); }); });
+}
+
+let panel = null, currentView = '';
+async function showView(v) {
+  currentView = v;
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  const chatUp = v === '';
+  $('#wins').style.display = chatUp ? '' : 'none'; $('#foot').style.display = chatUp ? '' : 'none';
+  if (panel) { panel.remove(); panel = null; }
+  if (chatUp) { $('#q').focus(); return; }
+  panel = document.createElement('div'); panel.className = 'panel'; $('#foot').before(panel);
+  const body = document.createElement('div'); panel.appendChild(body);
+  await renderView(v, body);
+}
+
+async function renderView(VIEW, body) {
+  if (VIEW === 'dates') {
+    const rows = await api('/api/gauntlet'), okc = rows.filter(x => x.ok).length;
+    body.innerHTML = `<h2>The date gauntlet</h2><p class="note">Many ways to write a period. The rules read each one the same way every time. Type your own. Phrases the rules don't cover are handed to the model as one small question, and code checks its answer. Today in this demo is ${info.today}.</p>
+      <div class="dq"><input id="dtext" placeholder="try: last quarter · Q3'17 · 03/04/2018 · between Mar and May 2018 · around Diwali"><button class="btn" id="dgo">Read it</button><button class="btn alt" id="drep">Ask “last quarter” 1,000 times</button></div><div id="dres"></div>
+      <p class="note" style="margin-top:6px"><b>${okc} of ${rows.length}</b> phrases below behave as intended (34 used while building the rules, 28 written before them, 8 deliberately not covered).</p>
+      <table class="g"><tr><th>Phrase</th><th>Read as</th><th>Rule</th><th>Note</th><th></th></tr>${rows.map(x => `<tr><td class="ph">${esc(x.phrase)}</td><td>${x.status === 'resolved' ? (x.start_got || '…') + ' → ' + (x.end_got || '…') : '<span class="un">not covered → model</span>'}</td><td>${esc(x.rule)}</td><td>${esc((x.flags || []).join(', '))}</td><td class="${x.ok ? 'ok' : 'no'}">${x.ok ? '✓' : '✗'}</td></tr>`).join('')}</table>`;
+    const run = async () => { const v = $('#dtext').value.trim(); if (!v) return; const r = await api('/api/dates', {text: v}); $('#dres').innerHTML = `<div class="dres"><b>“${esc(v)}”</b> → ${r.status === 'resolved' ? `${r.start_got || '…'} to ${r.end_got || '…'} · rule: ${esc(r.rule)}${r.flags.length ? ' · ' + esc(r.flags.join(', ')) : ''}` : r.status === 'none' ? 'no date found (would mean all time)' : '<span class="un">the rules don\'t cover this, so the model would be asked about just this part.</span>'}</div>`; };
+    $('#dgo').onclick = run; $('#dtext').onkeydown = e => { if (e.key === 'Enter') run(); };
+    $('#drep').onclick = async () => { const r = await api('/api/repeat', {seller_id: seller.seller_id, message: 'How many orders did I get last quarter?', n: 1000}); $('#dres').innerHTML = `<div class="dres">${fmt(r.runs)} times the same question → <b>${r.distinct}</b> distinct answer${r.distinct === 1 ? '' : 's'} · model calls: ${r.llm_calls}</div>`; };
+  } else if (VIEW === 'queue') {
+    const q = await api('/api/queue'), cats = await api('/api/categories'), groups = {};
+    q.forEach(x => (groups[x.kind + '|' + x.cluster] = groups[x.kind + '|' + x.cluster] || []).push(x));
+    body.innerHTML = `<h2>Review queue</h2><p class="note">Every phrase the rules couldn't read is logged and grouped by what it's closest to. A reviewer maps a group once, offline, and from then on it's a rule: no model needed. Ask something new in the chat (try “yoga mat” or “festive season”) and it shows up here.</p>` +
+      (Object.keys(groups).length ? Object.entries(groups).map(([k, items]) => { const [kind, cl] = k.split('|'); return `<div class="cl"><div class="h"><span>${kind === 'date' ? 'Time phrases' : 'Closest category: ' + esc(cl.replace(/_/g, ' '))}</span><span style="font-weight:400;color:var(--muted)">${items.length} phrase(s)</span></div>` + items.map(x => `<div class="r"><span>${esc(x.phrase)} ${x.mapped ? '<span class="mapped">· now a rule</span> <button class="btn alt" style="padding:2px 9px;font-size:11.5px" data-ask="' + esc(x.example) + '">Ask it again in the chat</button>' : ''}<div style="font-size:11.5px;color:var(--muted)">“${esc(x.example)}”</div></span><span class="c">${x.count}×</span></div>` + (x.mapped ? '' : `<div class="r" style="background:var(--bg)"><span>${kind === 'date' ? `repeating window <input class="win" data-p="${esc(x.phrase)}" value="10-01..12-31" size="12"> (MM-DD..MM-DD)` : `${x.model_pick ? `<span style="color:var(--muted)">the model suggested <b>${esc(x.model_pick.join(', '))}</b>; check it, then</span> ` : ''}map to <select class="sel" data-p="${esc(x.phrase)}">${[...new Set([...(x.model_pick || []), ...(x.nearest || []).map(n => n.category), ...cats])].map(c => `<option>${esc(c)}</option>`).join('')}</select>`} <button class="btn" data-k="${kind}" data-p="${esc(x.phrase)}">Approve</button></span><span></span></div>`)).join('') + '</div>'; }).join('') : '<div style="color:var(--muted);font-size:13px">Nothing queued yet.</div>') + `<p style="margin-top:10px"><button class="btn alt" id="reset">Reset the demo</button></p>`;
+    const again = async (msg) => { await showView('queue'); if (msg) panel.insertAdjacentHTML('afterbegin', `<div class="hint">${msg}</div>`); };
+    body.querySelectorAll('button[data-ask]').forEach(b => b.onclick = async () => { await showView(''); send(b.dataset.ask); });
+    body.querySelectorAll('button[data-k]').forEach(b => b.onclick = async () => { const p = b.dataset.p; if (b.dataset.k === 'date') await api('/api/approve_date', {phrase: p, window: body.querySelector(`.win[data-p="${CSS.escape(p)}"]`).value}); else await api('/api/approve_category', {phrase: p, category: body.querySelector(`.sel[data-p="${CSS.escape(p)}"]`).value}); again('Saved. “' + esc(p) + '” is now a rule. Your chat is untouched: press “Ask it again in the chat” to see it answered by rules alone.'); });
+    $('#reset').onclick = async () => { await api('/api/reset', {}); $('#chat').innerHTML = '<div class="empty">Ask about your orders, like you would ask a colleague.</div>'; $('#be').innerHTML = '<div class="idle">Ask a question on the left.<br>This side shows every step behind the answer, and who decided each one: a <b>rule</b>, the <b>model</b>, or a <b>check</b>.</div>'; again('The demo was reset: the review queue, the approved rules and the chat are cleared.'); };
+  } else {
+    const a = await api('/api/audit');
+    body.innerHTML = `<h2>Audit log</h2><p class="note">Every message leaves a record: who asked, which route, what ran, and how many model calls it needed. Newest first.</p><div class="logl">${a.map(x => `<div>${esc((x.ts || '').slice(11))}  ${x.action ? esc(x.action) + ' ' + esc(x.phrase || '') + ' ' + esc(x.category || x.window || '') : `[${esc(x.route)}] …${esc(x.seller)}  “${esc(x.message)}”  → ${esc(x.outcome)}  · model calls: ${x.llm_calls.length}`}</div>`).join('') || '<div style="color:var(--muted)">Empty.</div>'}</div>`;
+  }
+}
+
+function statusPill() {
+  const l = info.llm; $('#mstat').innerHTML = `<span class="dot ${l.live_available || l.recorded_answers ? 'on' : ''}"></span>Model: ${l.live_available ? (l.key_verified ? 'connected (' + esc(l.model) + ')' : 'key saved, but not verified (is the computer offline?)') : l.recorded_answers ? l.recorded_answers + ' recorded answers' : 'not connected. The rules work without it'}`;
+}
+let bannerTimer = null;
+function banner(kind, text, ms) { const b = $('#banner'); if (!b) return; clearTimeout(bannerTimer); b.className = kind; b.textContent = text; if (ms) bannerTimer = setTimeout(() => { b.className = ''; }, ms); }
+const PROVIDERS = {openai: 'OpenAI', anthropic: 'Anthropic'};
+function keyBox() {
+  const box = $('#keybox'); if (!box) return;
+  const locked = () => { const l = info.llm, ms = l.models.length ? l.models : [l.model];
+    box.innerHTML = `<span class="locked" title="The key is locked. It can be replaced but never viewed.">${PROVIDERS[l.provider]} ••••••••••••</span><select id="msel" title="Model used for the steps the rules can't do">${ms.map(m => `<option ${m === l.model ? 'selected' : ''}>${esc(m)}</option>`).join('')}</select><button class="alt" id="krep">Replace</button><button class="alt" id="koff">Disconnect</button>`;
+    $('#msel').onchange = async e => { try { await api('/api/model', {model: e.target.value}); info = await api('/api/info'); statusPill(); banner('ok', 'Model changed to ' + e.target.value + '.', 4000); } catch (x) { banner('err', x.message); } };
+    $('#krep').onclick = () => open(); $('#koff').onclick = async () => { sessionStorage.removeItem('guardrail_key'); await api('/api/key/clear', {}); info = await api('/api/info'); statusPill(); banner('ok', 'Disconnected. The key was forgotten.', 4000); open(); }; };
+  const open = () => { box.innerHTML = `<select id="prov" title="Which company's model to use"><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option></select><input id="keyin" type="text" name="k${Math.random().toString(36).slice(2)}" placeholder="Paste your API key" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true"><button id="kgo">Connect</button>`;
+    const go = async () => { const inp = $('#keyin'), v = inp.value, provider = $('#prov').value; if (!v.trim()) { banner('err', 'Paste your API key first, then press Connect.', 5000); return; }
+      inp.value = ''; box.innerHTML = '<span class="kerr" style="color:var(--warn)">Checking the key…</span>'; banner('wait', 'Checking the key with ' + PROVIDERS[provider] + '…');
+      try { const r = await api('/api/key', {key: v, provider}); sessionStorage.setItem('guardrail_key', JSON.stringify({key: v, provider})); info = await api('/api/info'); statusPill(); locked();
+        banner('ok', (r.verified ? 'Key accepted by ' + PROVIDERS[provider] + '. ' : 'Key saved. ') + 'It is now locked: it can be replaced but never viewed, and is kept in this app\'s memory. Pick the model from the list at the top.', 9000);
+      } catch (e) { open(); $('#prov').value = provider; const m = e.message === 'not found' ? 'This app is an older version without this feature. Stop it and start it again (python3 app.py), then reload this page.' : e.message; banner('err', 'Key not accepted. ' + m); } };
+    $('#kgo').onclick = go; $('#keyin').onkeydown = e => { if (e.key === 'Enter') go(); }; $('#keyin').focus(); };
+  if (info.llm.key_set) {
+    locked();
+  } else {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem('guardrail_key') || 'null');
+      if (saved && saved.key) {
+        api('/api/key', {key: saved.key, provider: saved.provider || 'openai'}).then(async r => {
+          info = await api('/api/info'); statusPill(); locked();
+        }).catch(() => open());
+      } else {
+        open();
+      }
+    } catch (e) {
+      open();
+    }
+  }
+}
+
+(async () => {
+  info = await api('/api/info'); const sellers = await api('/api/sellers'); seller = sellers[+P.get('seller') || 0];
+  statusPill(); keyBox();
+  const paintDesign = () => document.querySelectorAll('#design button').forEach(b => b.classList.toggle('on', b.dataset.d === design));
+  paintDesign();
+  $('#design').onclick = e => { const b = e.target.closest('button'); if (!b) return; design = b.dataset.d; paintDesign(); showView('');
+    banner(design === 'all_llm' ? 'wait' : 'ok', design === 'all_llm' ? 'Model only: the model decides the period, the products, what to measure, and writes the query. This is the obvious build. Ask a question.' : 'Rules first: rules read what they can, and the model is asked only for what is left.', 9000); };
+  $('#tabs').onclick = e => { const b = e.target.closest('button'); if (b) showView(b.dataset.v); };
+  $('#whoinfo').textContent = seller.label + ' · ' + seller.items.toLocaleString() + ' order lines';
+  chips(); $('#go').onclick = () => send($('#q').value); $('#q').onkeydown = e => { if (e.key === 'Enter') send($('#q').value); };
+  $('#newchat').onclick = async () => {
+    try { await api('/api/memory/clear', {seller_id: seller.seller_id}); } catch (e) { /* endpoint may not exist on old servers, best-effort */ }
+    $('#chat').innerHTML = '<div class="empty">Ask about your orders, like you would ask a colleague.</div>';
+    $('#be').innerHTML = '<div class="idle">Ask a question on the left.<br>This side shows every step behind the answer, and who decided each one: a <b>rule</b>, the <b>model</b>, or a <b>check</b>.</div>';
+    banner('ok', 'New chat: previous turns are forgotten. This session starts fresh.', 4000);
+    $('#q').focus();
+  };
+  const limitBtn = $('#limitbtn'), limitPop = $('#limitpop'), limitClose = $('#limitclose');
+  const toggleLimits = show => { limitPop.hidden = !show; limitBtn.classList.toggle('on', show); limitBtn.setAttribute('aria-expanded', show ? 'true' : 'false'); };
+  limitBtn.onclick = e => { e.stopPropagation(); toggleLimits(limitPop.hidden); };
+  limitClose.onclick = () => toggleLimits(false);
+  document.addEventListener('click', e => { if (!limitPop.hidden && !limitPop.contains(e.target) && e.target !== limitBtn) toggleLimits(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !limitPop.hidden) toggleLimits(false); });
+  if (VIEW) showView(VIEW); else if (P.get('ask')) send(P.get('ask')); else $('#q').focus();
+})();
+</script>
+</body>
+</html>

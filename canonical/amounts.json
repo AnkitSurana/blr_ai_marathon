@@ -1,0 +1,64 @@
+{
+  "_readme": "Named value bands. Each key is a phrase sellers say; each value is a WHERE-clause fragment against columns of the items view. The engine looks up your threshold and adds it to the SQL template  -  no LLM call, no free-form SQL.",
+  "_docs": {
+    "columns-you-can-filter": [
+      "price",
+      "freight_value"
+    ],
+    "operators": [
+      ">",
+      ">=",
+      "<",
+      "<=",
+      "=",
+      "!="
+    ],
+    "example-use": "'big orders' \u2192 price >= 500. Question 'how many big orders in 2017?' becomes 'orders WHERE price >= 500 AND purchase_date BETWEEN 2017-01-01 AND 2017-12-31'.",
+    "careful": "A wrong threshold gives a wrong count. Say the threshold on the answer if audience-facing (the template does: 'big orders (>= R$ 500.00)')."
+  },
+  "big orders": {
+    "column": "price",
+    "op": ">=",
+    "value": 500
+  },
+  "budget items": {
+    "column": "price",
+    "op": "<",
+    "value": 50
+  },
+  "cheap orders": {
+    "column": "price",
+    "op": "<",
+    "value": 20
+  },
+  "expensive shipping": {
+    "column": "freight_value",
+    "op": ">=",
+    "value": 30
+  },
+  "free shipping": {
+    "column": "freight_value",
+    "op": "<=",
+    "value": 0
+  },
+  "large orders": {
+    "column": "price",
+    "op": ">=",
+    "value": 500
+  },
+  "premium items": {
+    "column": "price",
+    "op": ">=",
+    "value": 200
+  },
+  "premium products": {
+    "column": "price",
+    "op": ">=",
+    "value": 200
+  },
+  "small orders": {
+    "column": "price",
+    "op": "<",
+    "value": 20
+  }
+}

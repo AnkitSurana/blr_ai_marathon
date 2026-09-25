@@ -1,0 +1,422 @@
+[
+{
+"phrase": "in 2017",
+"start": "2017-01-01",
+"end": "2017-12-31",
+"set": "dev"
+},
+{
+"phrase": "during 2018",
+"start": "2018-01-01",
+"end": "2018-12-31",
+"set": "dev"
+},
+{
+"phrase": "in Q3 2017",
+"start": "2017-07-01",
+"end": "2017-09-30",
+"set": "dev"
+},
+{
+"phrase": "in Q3'17",
+"start": "2017-07-01",
+"end": "2017-09-30",
+"set": "dev"
+},
+{
+"phrase": "in the third quarter of 2017",
+"start": "2017-07-01",
+"end": "2017-09-30",
+"set": "dev"
+},
+{
+"phrase": "in March 2018",
+"start": "2018-03-01",
+"end": "2018-03-31",
+"set": "dev"
+},
+{
+"phrase": "in Mar 2018",
+"start": "2018-03-01",
+"end": "2018-03-31",
+"set": "dev"
+},
+{
+"phrase": "in Nov '17",
+"start": "2017-11-01",
+"end": "2017-11-30",
+"set": "dev"
+},
+{
+"phrase": "in 2018-03",
+"start": "2018-03-01",
+"end": "2018-03-31",
+"set": "dev"
+},
+{
+"phrase": "in 03/2018",
+"start": "2018-03-01",
+"end": "2018-03-31",
+"set": "dev"
+},
+{
+"phrase": "last month",
+"start": "2018-08-01",
+"end": "2018-08-31",
+"set": "dev"
+},
+{
+"phrase": "this month",
+"start": "2018-09-01",
+"end": "2018-09-30",
+"set": "dev"
+},
+{
+"phrase": "last quarter",
+"start": "2018-04-01",
+"end": "2018-06-30",
+"set": "dev"
+},
+{
+"phrase": "this quarter",
+"start": "2018-07-01",
+"end": "2018-09-30",
+"set": "dev"
+},
+{
+"phrase": "last year",
+"start": "2017-01-01",
+"end": "2017-12-31",
+"set": "dev"
+},
+{
+"phrase": "this year",
+"start": "2018-01-01",
+"end": "2018-12-31",
+"set": "dev"
+},
+{
+"phrase": "year to date",
+"start": "2018-01-01",
+"end": "2018-09-01",
+"set": "dev"
+},
+{
+"phrase": "in the last 3 months",
+"start": "2018-06-01",
+"end": "2018-08-31",
+"set": "dev"
+},
+{
+"phrase": "in the last 30 days",
+"start": "2018-08-02",
+"end": "2018-08-31",
+"set": "dev"
+},
+{
+"phrase": "last week",
+"start": "2018-08-20",
+"end": "2018-08-26",
+"set": "dev"
+},
+{
+"phrase": "yesterday",
+"start": "2018-08-31",
+"end": "2018-08-31",
+"set": "dev"
+},
+{
+"phrase": "between January and March 2018",
+"start": "2018-01-01",
+"end": "2018-03-31",
+"set": "dev"
+},
+{
+"phrase": "from Jan 2017 to Jun 2017",
+"start": "2017-01-01",
+"end": "2017-06-30",
+"set": "dev"
+},
+{
+"phrase": "in H1 2018",
+"start": "2018-01-01",
+"end": "2018-06-30",
+"set": "dev"
+},
+{
+"phrase": "since June 2018",
+"start": "2018-06-01",
+"end": "2018-09-01",
+"set": "dev"
+},
+{
+"phrase": "until March 2018",
+"start": null,
+"end": "2018-03-31",
+"set": "dev"
+},
+{
+"phrase": "on 24 Nov 2017",
+"start": "2017-11-24",
+"end": "2017-11-24",
+"set": "dev"
+},
+{
+"phrase": "in March",
+"start": "2018-03-01",
+"end": "2018-03-31",
+"set": "dev"
+},
+{
+"phrase": "in Q4",
+"start": "2017-10-01",
+"end": "2017-12-31",
+"set": "dev"
+},
+{
+"phrase": "on 2017-11-24",
+"start": "2017-11-24",
+"end": "2017-11-24",
+"set": "dev"
+},
+{
+"phrase": "on 24/11/2017",
+"start": "2017-11-24",
+"end": "2017-11-24",
+"set": "dev"
+},
+{
+"phrase": "in the past 6 months",
+"start": "2018-03-01",
+"end": "2018-08-31",
+"set": "dev"
+},
+{
+"phrase": "for the first half of 2018",
+"start": "2018-01-01",
+"end": "2018-06-30",
+"set": "dev"
+},
+{
+"phrase": "from 1 Jan 2018 to 31 Mar 2018",
+"start": "2018-01-01",
+"end": "2018-03-31",
+"set": "dev"
+},
+{
+"phrase": "in the year 2017",
+"start": "2017-01-01",
+"end": "2017-12-31",
+"set": "holdout"
+},
+{
+"phrase": "during Q2 of 2018",
+"start": "2018-04-01",
+"end": "2018-06-30",
+"set": "holdout"
+},
+{
+"phrase": "in second quarter 2018",
+"start": "2018-04-01",
+"end": "2018-06-30",
+"set": "holdout"
+},
+{
+"phrase": "for November 2017",
+"start": "2017-11-01",
+"end": "2017-11-30",
+"set": "holdout"
+},
+{
+"phrase": "in Sept 2017",
+"start": "2017-09-01",
+"end": "2017-09-30",
+"set": "holdout"
+},
+{
+"phrase": "in Feb '18",
+"start": "2018-02-01",
+"end": "2018-02-28",
+"set": "holdout"
+},
+{
+"phrase": "for 2018-07",
+"start": "2018-07-01",
+"end": "2018-07-31",
+"set": "holdout"
+},
+{
+"phrase": "in 7/2018",
+"start": "2018-07-01",
+"end": "2018-07-31",
+"set": "holdout"
+},
+{
+"phrase": "in the previous month",
+"start": "2018-08-01",
+"end": "2018-08-31",
+"set": "holdout"
+},
+{
+"phrase": "the previous quarter",
+"start": "2018-04-01",
+"end": "2018-06-30",
+"set": "holdout"
+},
+{
+"phrase": "so far this year",
+"start": "2018-01-01",
+"end": "2018-09-01",
+"set": "holdout"
+},
+{
+"phrase": "month to date",
+"start": "2018-09-01",
+"end": "2018-09-01",
+"set": "holdout"
+},
+{
+"phrase": "over the last 2 weeks",
+"start": "2018-08-13",
+"end": "2018-08-26",
+"set": "holdout"
+},
+{
+"phrase": "in the past 90 days",
+"start": "2018-06-03",
+"end": "2018-08-31",
+"set": "holdout"
+},
+{
+"phrase": "between March and May 2018",
+"start": "2018-03-01",
+"end": "2018-05-31",
+"set": "holdout"
+},
+{
+"phrase": "from Feb through Apr 2018",
+"start": "2018-02-01",
+"end": "2018-04-30",
+"set": "holdout"
+},
+{
+"phrase": "starting June 2018",
+"start": "2018-06-01",
+"end": "2018-09-01",
+"set": "holdout"
+},
+{
+"phrase": "up to July 2018",
+"start": null,
+"end": "2018-07-31",
+"set": "holdout"
+},
+{
+"phrase": "on Nov 24, 2017",
+"start": "2017-11-24",
+"end": "2017-11-24",
+"set": "holdout"
+},
+{
+"phrase": "on the 24th of November 2017",
+"start": "2017-11-24",
+"end": "2017-11-24",
+"set": "holdout"
+},
+{
+"phrase": "on 11/24/2017",
+"start": "2017-11-24",
+"end": "2017-11-24",
+"set": "holdout"
+},
+{
+"phrase": "in December",
+"start": "2017-12-01",
+"end": "2017-12-31",
+"set": "holdout"
+},
+{
+"phrase": "during the last 12 months",
+"start": "2017-09-01",
+"end": "2018-08-31",
+"set": "holdout"
+},
+{
+"phrase": "in the last 7 days",
+"start": "2018-08-25",
+"end": "2018-08-31",
+"set": "holdout"
+},
+{
+"phrase": "in 2016 Q4",
+"start": "2016-10-01",
+"end": "2016-12-31",
+"set": "holdout"
+},
+{
+"phrase": "for Q1 2018",
+"start": "2018-01-01",
+"end": "2018-03-31",
+"set": "holdout"
+},
+{
+"phrase": "in the second half of 2017",
+"start": "2017-07-01",
+"end": "2017-12-31",
+"set": "holdout"
+},
+{
+"phrase": "on 03/04/2018",
+"start": "2018-04-03",
+"end": "2018-04-03",
+"set": "holdout"
+},
+{
+"phrase": "around Black Friday 2017",
+"start": null,
+"end": null,
+"set": "unresolved"
+},
+{
+"phrase": "during the festive season",
+"start": null,
+"end": null,
+"set": "unresolved"
+},
+{
+"phrase": "recently",
+"start": null,
+"end": null,
+"set": "unresolved"
+},
+{
+"phrase": "in the summer of 2017",
+"start": null,
+"end": null,
+"set": "unresolved"
+},
+{
+"phrase": "last Christmas",
+"start": null,
+"end": null,
+"set": "unresolved"
+},
+{
+"phrase": "over the holidays",
+"start": null,
+"end": null,
+"set": "unresolved"
+},
+{
+"phrase": "in the last couple of months",
+"start": null,
+"end": null,
+"set": "unresolved"
+},
+{
+"phrase": "a while back",
+"start": null,
+"end": null,
+"set": "unresolved"
+}
+]

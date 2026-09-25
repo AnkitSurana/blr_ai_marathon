@@ -1,0 +1,590 @@
+{
+  "_readme": "Canonical vocabulary aliases covering all 71 Olist categories. Enables rich natural language and semantic matching.",
+  "agro_industry_and_commerce": [
+    "agriculture",
+    "farming tools",
+    "farm supplies",
+    "crops",
+    "livestock equipment",
+    "agro"
+  ],
+  "air_conditioning": [
+    "air conditioners",
+    "ac units",
+    "climate control",
+    "cooling units",
+    "hvac"
+  ],
+  "art": [
+    "artwork",
+    "paintings",
+    "sculptures",
+    "wall art",
+    "prints",
+    "canvases"
+  ],
+  "arts_and_craftmanship": [
+    "handmade crafts",
+    "artisan goods",
+    "pottery",
+    "knitting supplies",
+    "craftwork",
+    "crafts"
+  ],
+  "audio": [
+    "headphones",
+    "earbuds",
+    "bluetooth speakers",
+    "soundbars",
+    "audio equipment",
+    "microphones",
+    "earphones",
+    "speakers"
+  ],
+  "auto": [
+    "car parts",
+    "automotive accessories",
+    "tires",
+    "motor oil",
+    "car electronics",
+    "auto spares",
+    "vehicle accessories"
+  ],
+  "baby": [
+    "baby clothes",
+    "strollers",
+    "cribs",
+    "diapers",
+    "infant care",
+    "baby gear",
+    "baby bottles",
+    "pacifiers",
+    "baby items",
+    "baby products"
+  ],
+  "bed_bath_table": [
+    "bedding",
+    "bedsheets",
+    "blankets",
+    "bath towels",
+    "pillows",
+    "duvet covers",
+    "linens",
+    "tablecloths",
+    "bed and bath"
+  ],
+  "books_general_interest": [
+    "novels",
+    "fiction",
+    "non-fiction",
+    "biographies",
+    "general books",
+    "bestsellers"
+  ],
+  "books_imported": [
+    "foreign books",
+    "international editions",
+    "english books",
+    "imported novels",
+    "imported books"
+  ],
+  "books_technical": [
+    "programming books",
+    "textbooks",
+    "science books",
+    "engineering manuals",
+    "study guides",
+    "technical books"
+  ],
+  "cds_dvds_musicals": [
+    "music cds",
+    "audio albums",
+    "musical recordings",
+    "vinyl",
+    "concert dvds",
+    "cds and dvds"
+  ],
+  "christmas_supplies": [
+    "xmas decorations",
+    "christmas trees",
+    "holiday lights",
+    "ornaments",
+    "wreaths",
+    "christmas"
+  ],
+  "cine_photo": [
+    "dslr cameras",
+    "lenses",
+    "tripods",
+    "photography gear",
+    "camera accessories",
+    "camcorders",
+    "cameras"
+  ],
+  "computers": [
+    "laptops",
+    "desktop computers",
+    "macbooks",
+    "pcs",
+    "gaming rigs",
+    "workstations"
+  ],
+  "computers_accessories": [
+    "computer accessories",
+    "keyboards",
+    "mice",
+    "monitors",
+    "usb hubs",
+    "chargers",
+    "laptop stands",
+    "webcams",
+    "cables"
+  ],
+  "consoles_games": [
+    "playstation",
+    "xbox",
+    "nintendo switch",
+    "video games",
+    "gaming consoles",
+    "gamepads",
+    "games"
+  ],
+  "construction_tools_construction": [
+    "building tools",
+    "drills",
+    "hammers",
+    "saws",
+    "power tools",
+    "cement mixers",
+    "construction tools"
+  ],
+  "construction_tools_lights": [
+    "work lights",
+    "construction floodlights",
+    "spot lights",
+    "halogen lamps",
+    "site lights"
+  ],
+  "construction_tools_safety": [
+    "hard hats",
+    "safety goggles",
+    "protective gloves",
+    "earplugs",
+    "safety vests",
+    "safety equipment"
+  ],
+  "cool_stuff": [
+    "cool gadgets",
+    "novelty items",
+    "quirky gifts",
+    "trending gadgets",
+    "fun items",
+    "gadgets"
+  ],
+  "costruction_tools_garden": [
+    "garden power tools",
+    "lawnmowers",
+    "hedge trimmers",
+    "chainsaws",
+    "yard power tools"
+  ],
+  "costruction_tools_tools": [
+    "hand tools",
+    "screwdrivers",
+    "wrenches",
+    "toolboxes",
+    "pliers",
+    "tool sets"
+  ],
+  "diapers_and_hygiene": [
+    "baby diapers",
+    "wet wipes",
+    "nappies",
+    "sanitary pads",
+    "hygiene products"
+  ],
+  "drinks": [
+    "beverages",
+    "soda",
+    "juice",
+    "mineral water",
+    "energy drinks",
+    "tea",
+    "coffee drinks"
+  ],
+  "dvds_blu_ray": [
+    "movies",
+    "blu-ray discs",
+    "film dvds",
+    "box sets",
+    "dvds"
+  ],
+  "electronics": [
+    "consumer electronics",
+    "smart home devices",
+    "electronic devices",
+    "electronic modules",
+    "adapters"
+  ],
+  "fashio_female_clothing": [
+    "womens dresses",
+    "skirts",
+    "blouses",
+    "womens tops",
+    "female fashion",
+    "ladies wear",
+    "womens clothing"
+  ],
+  "fashion_bags_accessories": [
+    "handbags",
+    "purses",
+    "backpacks",
+    "wallets",
+    "belts",
+    "fashion sunglasses",
+    "totes",
+    "bags and accessories"
+  ],
+  "fashion_childrens_clothes": [
+    "kids clothes",
+    "toddler wear",
+    "boys clothes",
+    "girls dresses",
+    "childrens clothing"
+  ],
+  "fashion_male_clothing": [
+    "mens shirts",
+    "trousers",
+    "suits",
+    "mens t-shirts",
+    "jackets",
+    "mens apparel",
+    "mens clothing"
+  ],
+  "fashion_shoes": [
+    "sneakers",
+    "boots",
+    "high heels",
+    "sandals",
+    "running shoes",
+    "leather shoes",
+    "footwear",
+    "shoes"
+  ],
+  "fashion_sport": [
+    "activewear",
+    "gym clothes",
+    "workout leggings",
+    "tracksuits",
+    "athletic apparel",
+    "sportswear"
+  ],
+  "fashion_underwear_beach": [
+    "swimwear",
+    "bikinis",
+    "swim trunks",
+    "underwear",
+    "bras",
+    "lingerie",
+    "beachwear"
+  ],
+  "fixed_telephony": [
+    "landline phones",
+    "desk telephones",
+    "intercoms",
+    "corded phones"
+  ],
+  "flowers": [
+    "fresh bouquets",
+    "floral arrangements",
+    "indoor plants",
+    "roses",
+    "gardening flowers",
+    "bouquets",
+    "plants"
+  ],
+  "food": [
+    "packaged snacks",
+    "canned foods",
+    "pasta",
+    "dry groceries",
+    "gourmet food",
+    "chocolates",
+    "packaged food"
+  ],
+  "food_drink": [
+    "food and beverages",
+    "breakfast items",
+    "snacks and drinks",
+    "pantry staples",
+    "groceries",
+    "snacks"
+  ],
+  "furniture_bedroom": [
+    "beds",
+    "wardrobes",
+    "nightstands",
+    "dressers",
+    "mattresses",
+    "bedroom sets",
+    "bedroom furniture"
+  ],
+  "furniture_decor": [
+    "wall decor",
+    "mirrors",
+    "vases",
+    "clocks",
+    "indoor decoration",
+    "photo frames",
+    "home decor"
+  ],
+  "furniture_living_room": [
+    "sofas",
+    "couches",
+    "coffee tables",
+    "tv stands",
+    "recliners",
+    "armchairs",
+    "living room furniture"
+  ],
+  "furniture_mattress_and_upholstery": [
+    "foam mattresses",
+    "spring mattresses",
+    "mattress toppers",
+    "couch cushions",
+    "upholstery"
+  ],
+  "garden_tools": [
+    "watering cans",
+    "gardening shears",
+    "garden hoses",
+    "shovels",
+    "plant pots",
+    "rakes",
+    "gardening tools"
+  ],
+  "health_beauty": [
+    "beauty products",
+    "beauty stuff",
+    "cosmetics",
+    "lipstick",
+    "makeup",
+    "skincare"
+  ],
+  "home_appliances": [
+    "refrigerators",
+    "washing machines",
+    "microwaves",
+    "stoves",
+    "dishwashers",
+    "large appliances",
+    "household appliances"
+  ],
+  "home_appliances_2": [
+    "second home appliances",
+    "kitchen appliances",
+    "drying machines",
+    "freezers"
+  ],
+  "home_comfort_2": [
+    "ergonomic cushions",
+    "thermal blankets",
+    "cozy items",
+    "heaters"
+  ],
+  "home_confort": [
+    "comfortable bedding",
+    "plush pillows",
+    "cushions",
+    "humidifiers",
+    "home comfort"
+  ],
+  "home_construction": [
+    "building supplies",
+    "tiles",
+    "wall paint",
+    "plumbing pipes",
+    "electrical fixtures",
+    "home improvement"
+  ],
+  "housewares": [
+    "cookware",
+    "kitchen utensils",
+    "pots and pans",
+    "dinnerware",
+    "cutlery",
+    "kitchen organizers",
+    "household items",
+    "home goods"
+  ],
+  "industry_commerce_and_business": [
+    "industrial machinery",
+    "commercial scales",
+    "barcode scanners",
+    "retail fixtures",
+    "industrial supplies"
+  ],
+  "kitchen_dining_laundry_garden_furniture": [
+    "dining tables",
+    "dining chairs",
+    "patio sets",
+    "laundry racks",
+    "outdoor tables"
+  ],
+  "la_cuisine": [
+    "chef cookware",
+    "gourmet pots",
+    "french cooking tools",
+    "baking dishes",
+    "french cuisine"
+  ],
+  "luggage_accessories": [
+    "suitcases",
+    "travel bags",
+    "duffel bags",
+    "passport holders",
+    "luggage tags",
+    "luggage"
+  ],
+  "market_place": [
+    "general goods",
+    "variety store items",
+    "marketplace items"
+  ],
+  "music": [
+    "music vinyl",
+    "song albums",
+    "musical sheet books",
+    "audio tracks"
+  ],
+  "musical_instruments": [
+    "acoustic guitars",
+    "electric guitars",
+    "keyboards",
+    "violins",
+    "drum kits",
+    "amplifiers",
+    "instruments"
+  ],
+  "office_furniture": [
+    "office chairs",
+    "computer desks",
+    "filing cabinets",
+    "conference tables",
+    "ergonomic chairs",
+    "office desks"
+  ],
+  "party_supplies": [
+    "balloons",
+    "party banners",
+    "birthday decorations",
+    "party tableware",
+    "confetti",
+    "party decorations"
+  ],
+  "perfumery": [
+    "fragrances",
+    "luxury perfumes",
+    "colognes",
+    "body mists",
+    "eau de parfum",
+    "perfume"
+  ],
+  "pet_shop": [
+    "dog food",
+    "cat food",
+    "pet supplies",
+    "dog collars",
+    "pet beds",
+    "aquarium accessories",
+    "pets",
+    "pet products"
+  ],
+  "security_and_services": [
+    "surveillance services",
+    "monitoring devices",
+    "home security",
+    "security services"
+  ],
+  "signaling_and_security": [
+    "smoke detectors",
+    "security cameras",
+    "cctv",
+    "burglar alarms",
+    "sirens",
+    "security equipment"
+  ],
+  "small_appliances": [
+    "blenders",
+    "toasters",
+    "air fryers",
+    "electric kettles",
+    "food processors",
+    "juicers",
+    "small appliance"
+  ],
+  "small_appliances_home_oven_and_coffee": [
+    "espresso machines",
+    "coffee makers",
+    "countertop ovens",
+    "toaster ovens",
+    "coffee machines"
+  ],
+  "sports_leisure": [
+    "fitness equipment",
+    "gym weights",
+    "yoga mats",
+    "bicycles",
+    "camping gear",
+    "dumbbells",
+    "sports gear",
+    "fitness stuff",
+    "workout gear"
+  ],
+  "stationery": [
+    "notebooks",
+    "pens",
+    "pencils",
+    "staplers",
+    "paper supplies",
+    "desk organizers",
+    "school supplies",
+    "office supplies"
+  ],
+  "tablets_printing_image": [
+    "tablets",
+    "ipads",
+    "graphic tablets",
+    "inkjet printers",
+    "laser printers",
+    "printer ink",
+    "printers"
+  ],
+  "telephony": [
+    "smartphones",
+    "cell phones",
+    "iphones",
+    "android phones",
+    "phone cases",
+    "screen protectors",
+    "mobile phones"
+  ],
+  "toys": [
+    "board games",
+    "action figures",
+    "dolls",
+    "lego sets",
+    "puzzles",
+    "educational toys",
+    "kids toys",
+    "childrens toys"
+  ],
+  "watches_gifts": [
+    "wristwatches",
+    "smartwatches",
+    "luxury watches",
+    "gift sets",
+    "pocket watches",
+    "watches"
+  ]
+}

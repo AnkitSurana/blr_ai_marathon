@@ -1,0 +1,15 @@
+{
+  "_readme": "Additional out-of-scope words / phrases YOUR portal should refuse. These add to the base UNSUPPORTED set in app/extract.py  -  they don't replace it. Use with care: any hit sends the question to Route C (scope refusal). Keys starting with `_` are ignored.",
+  "_docs": {
+    "when-to-add": "When a question class is fundamentally unanswerable from your data (`inventory`, `stock levels` if you don't have them; `profit` if you don't have COGS).",
+    "when-not-to-add": "Never add common words like `orders` or `revenue`  -  those are the answers, not out-of-scope. This is only for words that mean 'my portal doesn't do this'."
+  },
+  "scope_words": [
+    "inventory",
+    "stock"
+  ],
+  "scope_phrases": [
+    "give me insights",
+    "explain the numbers"
+  ]
+}

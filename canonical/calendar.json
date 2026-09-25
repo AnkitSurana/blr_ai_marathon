@@ -1,0 +1,15 @@
+{
+  "_readme": "Your OWN business-calendar entries. Format: 'MM-DD..MM-DD' (year is inferred from the question). The engine ships with shipping-holiday defaults (Black Friday, Christmas, etc.); this file adds to them. Restart the app after editing. Keys starting with `_` are ignored.",
+  "_docs": {
+    "format": "'MM-DD..MM-DD'. Both zero-padded. Windows may wrap year boundary (e.g. '12-26..01-02' \u2192 the last week of one year plus the first week of the next).",
+    "resolution": "A phrase alone ('spring sale') resolves to the most recent past occurrence in the dataset. A phrase with a year ('spring sale 2017') pins it to that year.",
+    "collisions": "If your key duplicates a shipped default (like 'black friday'), yours wins."
+  },
+  "back to school": "07-25..08-15",
+  "end of quarter q1": "03-25..03-31",
+  "end of quarter q2": "06-25..06-30",
+  "end of quarter q3": "09-25..09-30",
+  "end of quarter q4": "12-25..12-31",
+  "spring sale": "03-15..03-22",
+  "summer sale": "06-15..07-15"
+}
